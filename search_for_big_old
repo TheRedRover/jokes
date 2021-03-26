@@ -32,7 +32,7 @@ function delete_elements {
 
 mapfile \
  -t files < <( find "$(pwd)" -maxdepth 1 \
- -type f -ctime +0 -size +0k)
+ -type f -ctime +14 -size +15M)
 
 if [ ${#files[@]} -eq 0 ]; then
     echo "No such files"
