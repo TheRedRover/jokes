@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# the first parametr means how long timer works
+# the second parametr is period
+main_counter=0
+counter=0
+term=$1
+period=$2
+
+echo "Term is $term. Period is $period"
+echo $(date +"%T")" - Timer started" 
+
+while [ $main_counter -lt $term ]
+do
+    sleep 1
+    ((main_counter++))
+    ((counter++))
+    if [ $counter -eq $period ]; then
+        ((counter=0))
+        echo $main_counter 'seconds have passed'\
+         `expr $term - $main_counter` 'left'
+    fi
+done
+echo  $(date +"%T") '- Time is over'

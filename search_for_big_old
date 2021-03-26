@@ -1,0 +1,55 @@
+#!/bin/bash
+
+function delete_elements {
+  arr=("$@")
+  ex="Exit"
+  arr+=("$ex")
+  while :
+  do
+  select opt in "${arr[@]}";
+    do
+    case $opt in
+      Exit)
+        return 0
+        ;;
+        * )
+          if [[ " ${arr[@]} " =~ " ${opt} " ]] ; then
+            rm "$opt"
+            for i in "${!arr[@]}"; do
+                if [[ ${arr[i]} = $opt ]]; then
+                    unset 'arr[i]'
+                fi
+            done
+          else
+            echo "invalid option"
+          fi
+          break
+        ;;
+    esac
+    done
+  done
+}
+
+mapfile \
+ -t files < <( find "$(pwd)" -maxdepth 1 \
+ -type f -ctime +0 -size +0k)
+
+if [ ${#files[@]} -eq 0 ]; then
+    echo "No such files"
+else
+  echo Your old big files:
+  for value in "${files[@]}"
+  do
+    echo "$value"
+  done
+  read -p "Do you want to delete files? (y/n)" -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    exit 0
+  else delete_elements "${files[@]}"
+  fi
+fi
+
+
+
+

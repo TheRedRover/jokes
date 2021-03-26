@@ -1,0 +1,9 @@
+#!/bin/bash
+for var in "$@"
+do
+if [ -f "$var" ]; then
+    echo -e $'\n'$(date +"%A %d.%m.%y %T") >> $var
+else 
+    echo -e 'file with such name: \042'$var'\042 does not exist'
+fi
+done

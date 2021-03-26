@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if test -d "$(pwd)"/apache-tomcat* ; then
+    echo "apach-tomcat exists."
+    exit 0
+fi
+
+echo "tomcat installation started"
+
+if test -f "$(pwd)"/apache-tomcat*tar.gz ; then
+    rm apache-tomcat*tar.gz*
+fi
+wget "https://www2.apache.paket.ua/tomcat/tomcat-9/v9.0.44/bin/apache-tomcat-9.0.44.tar.gz"
+tar -zxvf apache-tomcat*
+rm -r apache-tomcat*tar.gz*
+cd apache-tomcat*/conf
+
+echo
+echo "enter user name for tomacat server"
+read username
+echo "enter user password for tomacat server"
+read userpassword
+
+sed -i "/version=\"1.0\">/a \<role rolename=\"manager-gui\"\/\>\n<role rolename=\"admin-gui\"\/\>\n<role rolename=\"manager-script\"\/\>\n\<user username=\"$username\" password=\"$userpassword\" roles=\"manager-gui,manager-script,admin-gui\"\/\>" "tomcat-users.xml"
+
+
+
+echo "tomcat installed"

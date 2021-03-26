@@ -1,0 +1,23 @@
+#!/bin/bash
+warname=$1
+deployname=""
+echo "Enter your username"
+read  username
+echo "Enter your password"
+read  userpassword
+echo "Enter your host with port in format 'host:port'"
+read hostport
+echo "Enter name for your deploy "
+while [ "$deployname" = "" ]
+do 
+    read deployname
+done
+read -p "Deploy or undeploy (d\u)" -n 1 -r
+  echo $
+  if [[ $REPLY =~ ^[Dd]$ ]]; then
+
+    curl -u $username:$userpassword "http://$hostport/manager/text/deploy?path=/$deployname&war=file:$(pwd)/$warname"
+  elif  [[ $REPLY =~ ^[Uu]$ ]]; then
+    curl -u $username:$userpassword "http://$hostport/manager/text/undeploy?path=/$deployname&$warname"
+  else exit 1
+  fi
